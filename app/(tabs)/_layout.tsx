@@ -1,53 +1,65 @@
 import { Tabs } from "expo-router";
-import React from "react";
-
-import { TabBarIcon } from "@/components/navigation/TabBarIcon";
-import { Colors } from "@/constants/Colors";
-import { useColorScheme } from "@/hooks/useColorScheme";
+import { Ionicons } from "@expo/vector-icons";
+import { useColorScheme } from "react-native";
 
 export default function TabLayout() {
 	const colorScheme = useColorScheme();
+	const iconColor = colorScheme === 'dark' ? '#FFFFFF' : '#000000';
 
 	return (
 		<Tabs
 			screenOptions={{
-				tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+				tabBarStyle: {
+					backgroundColor: '#0D1B24',
+					borderTopWidth: 0,
+				},
+				tabBarActiveTintColor: '#FFFFFF',
+				tabBarInactiveTintColor: '#FFFFFF80',
 				headerShown: false,
 			}}
 		>
 			<Tabs.Screen
+				name="settings"
+				options={{
+					title: '',
+					tabBarIcon: ({ color }) => (
+						<Ionicons name="settings-outline" size={24} color={color} />
+					),
+				}}
+			/>
+			<Tabs.Screen
+				name="history"
+				options={{
+					title: '',
+					tabBarIcon: ({ color }) => (
+						<Ionicons name="time-outline" size={24} color={color} />
+					),
+				}}
+			/>
+			<Tabs.Screen
 				name="index"
 				options={{
-					title: "Connect",
-					tabBarIcon: ({ color, focused }) => (
-						<TabBarIcon
-							name={focused ? "wallet" : "wallet-outline"}
-							color={color}
-						/>
+					title: '',
+					tabBarIcon: ({ color }) => (
+						<Ionicons name="wallet-outline" size={28} color={color} />
 					),
 				}}
 			/>
 			<Tabs.Screen
-				name="read"
+				name="sync"
 				options={{
-					title: "Read",
-					tabBarIcon: ({ color, focused }) => (
-						<TabBarIcon
-							name={focused ? "reader" : "reader-outline"}
-							color={color}
-						/>
+					title: '',
+					tabBarIcon: ({ color }) => (
+						<Ionicons name="sync-outline" size={24} color={color} />
 					),
 				}}
 			/>
 			<Tabs.Screen
-				name="write"
+				name="navigation"
 				options={{
-					title: "Write",
-					tabBarIcon: ({ color, focused }) => (
-						<TabBarIcon
-							name={focused ? "code-slash" : "code-slash-outline"}
-							color={color}
-						/>
+					title: '',
+					tabBarIcon: ({ color }) => (
+						<Ionicons name="compass-outline" size={24} color={color} />
 					),
 				}}
 			/>
