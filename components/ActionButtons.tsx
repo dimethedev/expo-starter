@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { ThemedButton } from './ThemedButton';
+import { useActiveAccount } from 'thirdweb/react';
+import { AddressModal } from './AddressModal';
 import { View, StyleSheet, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemedText } from './ThemedText';
 
-interface ActionButton {
-  icon: string;
-  label: string;
-  onPress: () => void;
-}
-
 export function ActionButtons() {
-  const actions: ActionButton[] = [
+  const account = useActiveAccount();
+  const [showAddress, setShowAddress] = useState(false);
+
+  const actions = [
     {
       icon: 'arrow-up-outline',
       label: 'Send',
@@ -24,7 +24,7 @@ export function ActionButtons() {
     {
       icon: 'arrow-down-outline',
       label: 'Receive',
-      onPress: () => console.log('Receive pressed'),
+      onPress: () => setShowAddress(true),
     },
     {
       icon: 'apps-outline',
@@ -34,20 +34,30 @@ export function ActionButtons() {
   ];
 
   return (
-    <View style={styles.container}>
-      {actions.map((action, index) => (
-        <Pressable
-          key={index}
-          style={styles.actionButton}
-          onPress={action.onPress}
-        >
-          <View style={styles.iconContainer}>
-            <Ionicons name={action.icon} size={24} color="#FFFFFF" />
-          </View>
-          <ThemedText style={styles.label}>{action.label}</ThemedText>
-        </Pressable>
-      ))}
-    </View>
+    <>
+      <View style={styles.container}>
+        {actions.map((action, index) => (
+          <Pressable
+            key={index}
+            style={styles.actionButton}
+            onPress={action.onPress}
+          >
+            <View style={styles.iconContainer}>
+              <Ionicons name={action.icon} size={24} color="#FFFFFF" />
+            </View>
+            <ThemedText style={styles.label}>{action.label}</ThemedText>
+          </Pressable>
+        ))}
+      </View>
+
+      {account && (
+        <AddressModal
+          visible={showAddress}
+          address={account.address}
+          onClose={() => setShowAddress(false)}
+        />
+      )}
+    </>
   );
 }
 
