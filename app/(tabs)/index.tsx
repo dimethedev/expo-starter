@@ -12,6 +12,14 @@ import { useConnect } from "thirdweb/react";
 import { inAppWallet, createWallet, hasStoredPasskey } from "thirdweb/wallets";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from 'react';
+import { createThirdwebClient } from "thirdweb";
+import { chain } from "@/constants/chain";
+import { SendModal } from "@/components/SendModal";
+
+
+const client = createThirdwebClient({
+  clientId: process.env.EXPO_PUBLIC_THIRDWEB_CLIENT_ID,
+});
 
 export const ConnectWithGoogle = () => {
   const { connect, isConnecting } = useConnect();
@@ -105,6 +113,9 @@ export default function HomeScreen() {
   const [selectedNetwork, setSelectedNetwork] = useState('Sonic');
   const networks = ['Sonic', 'Solana', 'Base', 'Ethereum'];
 
+  // Add state for modal visibility
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#0D1B24", dark: "#0D1B24" }}
@@ -147,6 +158,12 @@ export default function HomeScreen() {
       />
 
       {!account && <ConnectWallet />}
+      
+      <SendModal 
+        visible={isModalVisible} 
+        onClose={() => setIsModalVisible(false)}
+        connectedClient={client} 
+      />
     </ParallaxScrollView>
   );
 }

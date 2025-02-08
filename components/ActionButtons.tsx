@@ -5,16 +5,18 @@ import { AddressModal } from './AddressModal';
 import { View, StyleSheet, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ThemedText } from './ThemedText';
+import { SendModal } from './SendModal';
 
 export function ActionButtons() {
   const account = useActiveAccount();
   const [showAddress, setShowAddress] = useState(false);
+  const [showSend, setShowSend] = useState(false);
 
   const actions = [
     {
       icon: 'arrow-up-outline',
       label: 'Send',
-      onPress: () => console.log('Send pressed'),
+      onPress: () => setShowSend(true),
     },
     {
       icon: 'git-compare-outline',
@@ -51,11 +53,17 @@ export function ActionButtons() {
       </View>
 
       {account && (
-        <AddressModal
-          visible={showAddress}
-          address={account.address}
-          onClose={() => setShowAddress(false)}
-        />
+        <>
+          <AddressModal
+            visible={showAddress}
+            address={account.address}
+            onClose={() => setShowAddress(false)}
+          />
+          <SendModal
+            visible={showSend}
+            onClose={() => setShowSend(false)}
+          />
+        </>
       )}
     </>
   );
